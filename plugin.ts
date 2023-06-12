@@ -87,6 +87,9 @@ export class Plugin extends AbstractPlugin {
             console.log("No valid voice found!");
         }
 
+        console.log("Location", location);
+        console.log("Voice", voice);
+
         const cUrl = new URL(`${location.replace(/\/*$/, "")}/api/tts`);
         cUrl.searchParams.set("text", ttsText);
         cUrl.searchParams.set("speaker_id", "");
