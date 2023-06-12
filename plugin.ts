@@ -69,7 +69,7 @@ export class Plugin extends AbstractPlugin {
 
         console.log("message to speak: ", messageToParse);
 
-        const ttsText = messageToParse.substring(0, 1024);
+        const ttsText = messageToParse.substring(0, 4096);
         const location: string = chat.getSetting("tts.coqui.location") || "";
         const cUrl = new URL(`${location.replace(/\/*$/, "")}/api/tts`);
         cUrl.searchParams.set("text", ttsText);

@@ -3,7 +3,7 @@ services:
   coqui:
     image: ghcr.io/coqui-ai/tts-cpu
     tty: true
-    entrypoint: 'python3 TTS/server/server.py --model_name tts_models/en/jenny/jenny'
+    entrypoint: 'python3 TTS/server/server.py --model_name tts_models/nl/css10/vits'
     volumes:
       - ~/dtbdev/tts:/root/.local/share/tts
     ports:
