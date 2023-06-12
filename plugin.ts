@@ -32,7 +32,9 @@ export class Plugin extends AbstractPlugin {
      */
     public getPluginSpecificChatSettings(): Array<ChatSettingTemplate<any>> {
         return [
-            new ChatSettingTemplate("tts.coqui.location", "🐸 Coqui location", "", (original: any) => original + "", (_: any) => null),
+            new ChatSettingTemplate<any>("tts.coqui.default.voice", "🐸 Default TTS voice", "jenny", (original: any) => original + "", (_) => null),
+            new ChatSettingTemplate<any>("tts.coqui.jenny.location", "🐸 Coqui location (Jenny)", "", (original: any) => original + "", (_: any) => null),
+            new ChatSettingTemplate<any>("tts.coqui.willem.location", "🐸 Coqui location (Willem)", "", (original: any) => original + "", (_: any) => null),
         ];
     }
 
@@ -43,7 +45,7 @@ export class Plugin extends AbstractPlugin {
 
         let messageToParse = msg.text ?? "";
         const hasOption = messageToParse.match(/(-\w .+?\b)/gms);
-        let voice = "jenny";
+        let voice = chat.getSetting("tts.coqui.default.voice") + "";
 
         if (hasOption) {
             for (const option of hasOption) {
@@ -67,10 +69,24 @@ export class Plugin extends AbstractPlugin {
             messageToParse = messageToParse.replace("/tts", "").trim().replace(/\s{2,}/gms, " ");
         }
 
+        const availableVoices = ["jenny", "willem"];
+        if (!availableVoices.find(y => y.toLowerCase() == voice.toLowerCase())) {
+            voice = chat.getSetting("tts.coqui.default.voice") + "";
+        }
+
         console.log("message to speak: ", messageToParse);
 
         const ttsText = messageToParse.substring(0, 4096);
-        const location: string = chat.getSetting("tts.coqui.location") || "";
+        let location = "";
+
+        if (voice === "jenny") {
+            location = chat.getSetting("tts.coqui.jenny.location") || "";
+        } else if (voice === "willem") {
+            location = chat.getSetting("tts.coqui.willem.location") || "";
+        } else {
+            console.log("No valid voice found!");
+        }
+
         const cUrl = new URL(`${location.replace(/\/*$/, "")}/api/tts`);
         cUrl.searchParams.set("text", ttsText);
         cUrl.searchParams.set("speaker_id", "");
