@@ -1,0 +1,10 @@
+version: '3.9'
+services:
+  coqui:
+    image: ghcr.io/coqui-ai/tts-cpu
+    tty: true
+    entrypoint: 'python3 TTS/server/server.py --model_name tts_models/en/jenny/jenny'
+    volumes:
+      - ~/dtbdev/tts:/root/.local/share/tts
+    ports:
+      - '15003:5002'
