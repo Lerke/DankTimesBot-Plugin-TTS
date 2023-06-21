@@ -46,6 +46,7 @@ export class Plugin extends AbstractPlugin {
         let messageToParse = msg.text ?? "";
         const hasOption = messageToParse.match(/(-\w .+?\b)/gms);
         let voice = chat.getSetting("tts.coqui.default.voice") + "";
+        let sneaky = false;
 
         if (hasOption) {
             for (const option of hasOption) {
@@ -59,8 +60,16 @@ export class Plugin extends AbstractPlugin {
                     console.log("Dummy setting", option);
                 }
 
+                if(/^-s/.test(option)) {
+                    sneaky = true;
+                }
+
                 messageToParse = messageToParse.replace(option, "");
             }
+        }
+
+        if(sneaky) {
+            this.telegramBotClient.deleteMessage(msg.chat.id, msg.message_id);
         }
 
         if (msg.reply_to_message) {
