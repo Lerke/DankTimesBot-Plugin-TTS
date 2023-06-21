@@ -24,7 +24,8 @@ export class Plugin extends AbstractPlugin {
      */
     public getPluginSpecificCommands(): BotCommand[] {
         const command = new BotCommand(["tts", "🤖"], "Have DTB say something", this.tts.bind(this));
-        return [command];
+        const sneakyCommand = new BotCommand(["stts"], "Have DTB say something, but sneakily", this.tts.bind(this));
+        return [command, sneakyCommand];
     }
 
     /**
