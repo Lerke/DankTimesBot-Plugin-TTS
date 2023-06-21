@@ -16,7 +16,7 @@ const path = require("path");
 
 export class Plugin extends AbstractPlugin {
     constructor() {
-        super("tts", "1.0.0");
+        super("tts", "1.0.1");
     }
 
     /**
@@ -39,14 +39,14 @@ export class Plugin extends AbstractPlugin {
     }
 
     private tts(chat: Chat, user: User, msg: TelegramBot.Message, match: string) {
-        if (!/^\/tts/.test(msg.text ?? "")) {
+        if (!/^\/tts|^\/stts/.test(msg.text ?? "")) {
             return;
         }
 
         let messageToParse = msg.text ?? "";
         const hasOption = messageToParse.match(/(-\w .+?\b)/gms);
         let voice = chat.getSetting("tts.coqui.default.voice") + "";
-        let sneaky = false;
+        const sneaky = /^\/stts/.test(msg.text);
 
         if (hasOption) {
             for (const option of hasOption) {
@@ -58,10 +58,6 @@ export class Plugin extends AbstractPlugin {
 
                 if (/^-x/.test(option)) {
                     console.log("Dummy setting", option);
-                }
-
-                if(/^-s/.test(option)) {
-                    sneaky = true;
                 }
 
                 messageToParse = messageToParse.replace(option, "");
