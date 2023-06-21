@@ -72,7 +72,7 @@ export class Plugin extends AbstractPlugin {
         if (msg.reply_to_message) {
             messageToParse = msg.reply_to_message.text ?? "";
         } else {
-            messageToParse = messageToParse.replace("/tts", "").trim().replace(/\s{2,}/gms, " ");
+            messageToParse = messageToParse.replace("/tts", "").replace("/stts", "").trim().replace(/\s{2,}/gms, " ");
         }
 
         const availableVoices = ["jenny", "willem"];
